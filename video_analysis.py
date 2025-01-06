@@ -20,16 +20,14 @@ def create_prompt(instruction,taxonomy):
     
     return combined_text
 
-def main(flag,rows=10):
+def main():
     taxonomy = f'./main_input/iab_definitions.txt' 
     instruction = f'./main_input/Instruction.txt'    
     source_file = f'./main_input/data_test.csv'
     
     
-    output_folder = f'./outputs_{datetime.now().strftime("%Y%m%d_%H%M%S")}'
-    n_rows = rows
-   
-    
+    output_folder = f'./outputs_{datetime.now().strftime("%Y%m%d_%H%M%S")}'    
+       
     url_column = 'gcs_fn'
     Id_column = 'Id'   
 
@@ -39,7 +37,7 @@ def main(flag,rows=10):
     
     
     data = pd.read_csv(source_file)
-    data = data.head(n_rows)
+    n_rows = rows = data.shape[0]
           
     
     print('start classification....')
@@ -47,15 +45,13 @@ def main(flag,rows=10):
     print('Classification finished!')
     print(f'analysis {data.shape[0]} videos and generated {result.shape[0]} classified vides')
     print('------------')
-     
-    merged_df = result.merge(data, on=Id_column, how='left')
+         
     
-    result.to_csv(f'{output_folder}/result.csv')
-    merged_df.to_csv(f'{output_folder}/merged_result.csv')
+    result.to_csv(f'{output_folder}/result.csv')    
 
     
 
 if __name__ == "__main__":    
-    main(flag)
+    main()
 
     
