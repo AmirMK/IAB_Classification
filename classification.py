@@ -71,7 +71,7 @@ def call_gemini(index, text_prompt,video_url):
     generation_config = GenerationConfig(
     max_output_tokens= 8192,
     temperature= 0.0,
-    candidate_count = 7,
+    candidate_count = 3,
     seed=0,
     response_mime_type = "application/json",
     response_schema=response_schema
