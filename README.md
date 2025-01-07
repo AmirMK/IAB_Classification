@@ -18,6 +18,8 @@ output_timestamped/
 
 classification.py  # Contains supporting methods for ad classification
 video_analysis.py  # Main script for processing and analysis
+config.yaml  # Contains configuration parameters
+
 ```
 ## Input Files
 
