@@ -74,8 +74,4 @@ def main():
     
 
 if __name__ == "__main__":   
-    load_config()  # Load the configuration file
-    config = get_config() 
     main()
-
-    
