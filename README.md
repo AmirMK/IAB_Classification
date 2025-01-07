@@ -47,6 +47,17 @@ video_analysis.py  # Main script for processing and analysis
   - **Id:** A unique identifier for each video.  
   - **gcs_fn:** The Google Cloud Storage (GCS) URL for the video file.
 
+### config.yaml
+- **Purpose:**  
+  Contains configuration parameters required for the script to run.
+
+- **Parameters:**
+  - **project_id:** The GCP project ID.  
+  - **location:** The endpoint location for the Gemini model.  
+  - **model:** The Gemini model being used for ad classification (default is `pro 1.5`).  
+  - **id_column:** The name of the column in the input dataset that serves as a unique identifier for each video (default is `Id`).  
+  - **url_column:** The name of the column in the input dataset that specifies the GCS URL to the video ad (default is `gcs_fn`).
+
 ---
 
 ## Code Files
