@@ -101,7 +101,7 @@ def call_gemini(index, config, text_prompt,video_url):
     return index, responses
 
 def run_multiple_times(config, data_df,prompt , batch_size=5):
-    Id_column = config['Id_column']
+    Id_column = config['id_column']
     url_column = config['url_column']
     
     # Initialize llm_responses to store results
@@ -117,7 +117,7 @@ def run_multiple_times(config, data_df,prompt , batch_size=5):
             
             # Submit tasks to the executor
             futures = [
-                executor.submit(call_gemini,config ,Id, text, url) for Id, text, url in batch
+                executor.submit(call_gemini,Id,config, text, url) for Id, text, url in batch
             ]
             
             # Collect the results as they complete
@@ -158,7 +158,7 @@ def classification(config, prompt, data):
         a = run_multiple_times(config, sample_data,prompt, batch_size=5)        
 
         for item in a:
-            result.append([item[Id_column],item['response']['IAB_Category'],
+            result.append([item[config['id_column']],item['response']['IAB_Category'],
                           item['response']['Advertiser_Domain'],
                           item['response']['Ad_Sensitivity'],
                           item['response']['Ad_Severity'],
@@ -171,6 +171,5 @@ def classification(config, prompt, data):
         
         print(f"Iteration {i+1} done and results saved.")
         
-    result = pd.DataFrame(result,columns=[Id_column,'Gemini_Prediction','Advertiser_Domain','Ad_Sensitivity','Ad_Severity','Advertiser','Ad_Language','IAB_Category_Reasoning'])
+    result = pd.DataFrame(result,columns=[config['id_column'],'Gemini_Prediction','Advertiser_Domain','Ad_Sensitivity','Ad_Severity','Advertiser','Ad_Language','IAB_Category_Reasoning'])
     return result 
-
