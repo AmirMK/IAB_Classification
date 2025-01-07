@@ -1,0 +1,5 @@
+project_id: vertex-ai-search-v2
+location: us-central1
+model: gemini-1.5-pro-002
+url_column: gcs_fn
+id_column: Id
