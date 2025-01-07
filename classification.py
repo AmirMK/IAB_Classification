@@ -32,7 +32,12 @@ def candidate_count_handeler(responses):
     return final_dict
 
     
-def call_gemini(index, text_prompt,video_url): 
+def call_gemini(index, config, text_prompt,video_url): 
+
+    project_id = config['project_id']
+    location = config['location']
+    model = config['model']
+    
     
     response_schema = {
           "type": "object", 
@@ -66,7 +71,7 @@ def call_gemini(index, text_prompt,video_url):
                        "Ad_Language","Advertiser","Ad_Severity","IAB_Category_Reasoning"]
         }
     
-    vertexai.init(project="vertex-ai-search-v2", location="us-central1")
+    vertexai.init(project=project_id, location=location)
     
     generation_config = GenerationConfig(
     max_output_tokens= 8192,
@@ -84,7 +89,7 @@ def call_gemini(index, text_prompt,video_url):
 
     
     model = GenerativeModel(
-        "gemini-1.5-pro-002",
+        model,
         system_instruction=text_prompt
     )
     responses = model.generate_content(
@@ -95,10 +100,13 @@ def call_gemini(index, text_prompt,video_url):
     responses = candidate_count_handeler(responses)
     return index, responses
 
-def run_multiple_times(data_df,prompt, url_column, Id_column , batch_size=5):
+def run_multiple_times(config, data_df,prompt , batch_size=5):
+    Id_column = config['Id_column']
+    url_column = config['url_column']
+    
     # Initialize llm_responses to store results
     llm_responses = []
-
+    
     # Prepare tasks with Id as the index
     tasks = [(row[Id_column], prompt,row[url_column]) for _, row in data_df.iterrows()]
 
@@ -109,7 +117,7 @@ def run_multiple_times(data_df,prompt, url_column, Id_column , batch_size=5):
             
             # Submit tasks to the executor
             futures = [
-                executor.submit(call_gemini, Id, text, url) for Id, text, url in batch
+                executor.submit(call_gemini,config ,Id, text, url) for Id, text, url in batch
             ]
             
             # Collect the results as they complete
@@ -130,7 +138,7 @@ def run_multiple_times(data_df,prompt, url_column, Id_column , batch_size=5):
 
     return llm_responses  
 
-def classification(prompt, url_column,Id_column, data):    
+def classification(config, prompt, data):    
     result=[]
     
     rows_per_sample = 10
@@ -147,7 +155,7 @@ def classification(prompt, url_column,Id_column, data):
 
         sample_data_full = pd.concat([sample_data_full, sample_data], ignore_index=True)
 
-        a = run_multiple_times(sample_data,prompt, url_column, Id_column , batch_size=5)        
+        a = run_multiple_times(config, sample_data,prompt, batch_size=5)        
 
         for item in a:
             result.append([item[Id_column],item['response']['IAB_Category'],
