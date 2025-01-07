@@ -23,13 +23,13 @@ def create_prompt(instruction,taxonomy):
 def main():
     taxonomy = f'./main_input/iab_definitions.txt' 
     instruction = f'./main_input/Instruction.txt'    
-    source_file = f'./main_input/data_test.csv'
+    source_file = f'./main_input/data.csv' #input file
     
     
     output_folder = f'./outputs_{datetime.now().strftime("%Y%m%d_%H%M%S")}'    
        
-    url_column = 'gcs_fn'
-    Id_column = 'Id'   
+    url_column = 'gcs_fn' #gcs url to video ads
+    Id_column = 'Id'   #Identical value per row
 
     os.makedirs(output_folder, exist_ok=True)  # Create the directory if it doesn't exist
     
