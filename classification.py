@@ -163,6 +163,6 @@ def classification(prompt, url_column,Id_column, data):
         
         print(f"Iteration {i+1} done and results saved.")
         
-    result = pd.DataFrame(result,columns=[Id_column,'level3_gemini','Advertiser_Domain','Ad_Sensitivity','Ad_Severity','Advertiser','Ad_Language','IAB_Category_Reasoning'])
+    result = pd.DataFrame(result,columns=[Id_column,'Gemini_Prediction','Advertiser_Domain','Ad_Sensitivity','Ad_Severity','Advertiser','Ad_Language','IAB_Category_Reasoning'])
     return result 
 
