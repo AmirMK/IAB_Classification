@@ -53,10 +53,7 @@ def main():
     source_file = f'./main_input/data.csv' #input file
     
     output_folder = f'./outputs_{datetime.now().strftime("%Y%m%d_%H%M%S")}'    
-       
-    url_column = config['url_column'] #gcs url to video ads
-    Id_column = config['Id_column']   #Identical value per row
-
+          
     os.makedirs(output_folder, exist_ok=True)  # Create the directory if it doesn't exist
     
     prompt = create_prompt(instruction,taxonomy)    
@@ -66,7 +63,7 @@ def main():
           
     
     print('start classification....')
-    result = cl.classification(config, prompt, url_column,Id_column, data)    
+    result = cl.classification(config, prompt, data)    
     print('Classification finished!')
     print(f'analysis {data.shape[0]} videos and generated {result.shape[0]} classified vides')
     print('------------')
